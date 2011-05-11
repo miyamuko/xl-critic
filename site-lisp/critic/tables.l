@@ -65,13 +65,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 ;;; Packages
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(cl:defpackage #:tables
-  (:use #:common-lisp)
-  (:export #:clear-table #:deftable #:in-table-p #:map-table #:remove-key)
+(defpackage :tables
+  (:use :lisp)
   )
 
-(in-package #:tables)
+(in-package :tables)
 
+(export '(clear-table deftable in-table-p map-table remove-key))
 
 ;;; ----------------------------------------------------------------------
 ;;; Implementation notes:
@@ -148,6 +148,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 (defun clear-table (table) (clrhash table))
 
 (defun map-table (fn table) (maphash fn table))
+
+(provide "critic/tables")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

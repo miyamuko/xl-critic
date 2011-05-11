@@ -1,0 +1,111 @@
+== xl-critic - The Lisp Critic scans your code for instances of bad Lisp programming practice.
+
+* Home URL: https://github.com/miyamuko/xl-critic
+* Version: 0.0.1
+
+
+=== SYNOPSIS
+
+以下のように lisp-critic:critique でチェックしたい式を scratch バッファなどで評価。
+
+    (lisp-critic:critique
+     (defun count-a (lst)
+       (setq n 0)
+       (dolist (x lst)
+         (if (equal x 'a)
+             (setq n (+ n 1))))
+       n))
+
+以下のような結果が出力されます。
+
+    ----------------------------------------------------------------------
+    Don't use setq inside DOLIST to accumulate values for n.
+    Use DO. Make n a DO variable and don't use SETQ etc at all.
+    ----------------------------------------------------------------------
+    You have an IF with no else branch. If the return value of the IF
+    matters, you should explicitly say what the else returns, e.g., NIL.
+    If the return value doesn't matter, use WHEN or UNLESS.
+    ----------------------------------------------------------------------
+    INCF would be simpler to add 1 to n than (lisp-critic::?
+    lisp-critic::FN)
+    ----------------------------------------------------------------------
+    GLOBALS!! Don't use global variables, i.e., n
+    ----------------------------------------------------------------------
+    Unless something special is going on, use EQL, not equal.
+    ----------------------------------------------------------------------
+    Don't use (+ n 1), use (1+ n) for its value or (incf n) to change n,
+    whichever is appropriate here.
+    ----------------------------------------------------------------------
+
+
+=== DESCRIPTION
+
+xl-critic は {The Lisp Critic}[http://www.cs.northwestern.edu/academics/courses/325/exercises/critic.html#critic]
+を xyzzy で使えるようにしたものです。
+
+lisp-critic については {lisp-criticでスタイルチェック - わだばLisperになる - cadr group}[http://cadr.g.hatena.ne.jp/g000001/20110510/1305025908]
+を参照してください。
+
+
+=== INSTALL
+
+1. {destructuring-bind}[http://coderepos.org/share/export/38912/lang/xyzzy/destructuring/site-lisp/destructuring-bind.l]
+   を site-lisp にインストール
+
+2. xl-critic をロード
+
+     (require "critic")
+
+3. scratch バッファなどで (lisp-critic:critique <ここにチェックしたいる式>) を評価
+
+
+=== TODO
+
+  * バイトコンパイル出来るようにする
+  * カーソル下の関数をチェックして結果をバッファに表示
+
+
+=== KNOWN BUGS
+
+  * バイトコンパイルしないと死ぬほど遅いが、
+    バイトコンパイルすると動かない。
+
+要望やバグは
+{GitHub Issues}[http://github.com/miyamuko/xl-critic/issues] か
+{@miyamuko}[http://twitter.com/home?status=%40miyamuko%20%23xyzzy%20xl-critic%3a%20]
+まで。
+
+
+=== AUTHOR
+
+みやむこ かつゆき <mailto:miyamuko@gmail.com>
+
+
+=== COPYRIGHT
+
+xl-critic は Chris Riesbeck 氏によって開発された Common Lisp 版の lisp-critic を
+xyzzy lisp に移植したものです。
+
+xl-critic は MIT/X ライセンスに従って本ソフトウェアを使用、再配布することができます。
+
+  Copyright (C) 1997-2005 Christopher K. Riesbeck
+  Copyright (C) 2011 MIYAMUKO Katsuyuki.
+
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

@@ -122,9 +122,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package #:lisp-critic)
+(in-package :lisp-critic)
 
-#|(require "lisp-critic")|#
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "critic/lisp-critic")
+  )
+
+#|(require "critic")|#
 #|(use-package '#:lisp-critic)|#
 
 
@@ -768,3 +772,6 @@ you should just use the pathname passed in."
 (define-lisp-pattern greater-difference-0
     (> (- (? x) (? y)) 0)
   "Instead of (> (- x y) 0), just write (> x y).")
+
+
+(provide "critic/lisp-rules")

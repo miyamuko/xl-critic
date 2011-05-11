@@ -25,13 +25,18 @@
 ;;; Module Dependencies
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(cl:defpackage #:extend-match
-  (:use #:common-lisp)
-  (:export #:pat-match #:bind-variable #:add-extension #:instantiate-pattern)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "cmu_loop")
+  (require "destructuring-bind") ; http://coderepos.org/share/export/38912/lang/xyzzy/destructuring/site-lisp/destructuring-bind.l
   )
 
-(in-package #:extend-match)
+(defpackage :extend-match
+  (:use :lisp :destructuring)
+  )
 
+(in-package :extend-match)
+
+(export '(pat-match bind-variable add-extension instantiate-pattern))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Design note:
@@ -334,4 +339,4 @@
                    (match-or (rest args) input blists)))))
 
 
-(provide "extend-match")
+(provide "critic/extend-match")

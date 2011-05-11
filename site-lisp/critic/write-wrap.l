@@ -29,12 +29,16 @@ OTHER DEALINGS IN THE SOFTWARE.
 ;;; Packages
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(cl:defpackage #:write-wrap
-  (:use #:common-lisp)
-  (:export #:write-wrap)
+(defpackage :write-wrap
+  (:use :lisp)
   )
 
-(in-package #:write-wrap)
+(in-package :write-wrap)
+
+(export '(write-wrap))
+
+(defun write-string (string &optional (stream *standard-output*) &key (start 0) end)
+  (format stream "~A" (substring string start end)))
 
 ;;; (WRITE-WRAP stream string width &optional indent first-indent)
 ;;;   writes string to stream, split into width-size lengths, breaking
@@ -55,10 +59,10 @@ OTHER DEALINGS IN THE SOFTWARE.
     (do* ((end (length strng))
           (indent-string (when (and indent (> indent 0))
                            (make-string indent
-                                        :initial-element #\space)))
+                                        :initial-element #\SPC)))
           (first-indent-string (when (and first-indent (> first-indent 0))
                                  (make-string first-indent
-                                              :initial-element #\space)))
+                                              :initial-element #\SPC)))
           (start 0 (1+ next))
           (next (break-pos strng start end width)
                 (break-pos strng start end width))
@@ -72,7 +76,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 ;;; (whitespace-p char) is true if ch is whitespace.
 
 (defun whitespace-p (ch)
- (member ch '(#\linefeed #\newline #\return #\space #\tab)))
+ (member ch '(#\LFD #\SPC #\TAB)))
 
 ;;; (break-pos string start end width) returns the position to break string
 ;;;   at, guaranteed to be no more than width characters.  If there's a`
@@ -83,9 +87,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 (defun break-pos (strng start end width)
  (unless (or (null start) (>= start end))
    (let ((limit (min (+ start width) end)))
-     (or (position #\newline strng :start start :end limit)
+     (or (position #\LFD strng :start start :end limit)
 	 (and (= end limit) end)
-	 (position #\space strng :start start :end limit :from-end t)
+	 (position #\SPC strng :start start :end limit :from-end t)
 	 limit))))		;;insert warning here, if desired
 
 
@@ -102,4 +106,4 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 |#
 
-(provide "write-wrap")
+(provide "critic/write-wrap")

@@ -98,19 +98,29 @@ forgot the USE-PACKAGE. Do this to fix things:
 
 |#
 
-(cl:defpackage #:lisp-critic
-  (:use  #:common-lisp #:tables #:extend-match #:write-wrap)
-  (:import-from #:extend-match #:match-and)
-  (:export #:critique #:critique-file #:critique-definition
-           #:apply-critique-rule
-           #:lisp-critic-version
-           #:add-lisp-pattern #:define-lisp-pattern #:remove-lisp-pattern
-           #:get-pattern #:get-response #:get-pattern-names
-           #:response-args #:response-format-string
-           #:clear-critique-db)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require "cmu_loop")
+  (require "destructuring-bind") ; http://coderepos.org/share/export/38912/lang/xyzzy/destructuring/site-lisp/destructuring-bind.l
+
+  (require "critic/tables")
+  (require "critic/extend-match")
+  (require "critic/write-wrap")
   )
 
-(in-package #:lisp-critic)
+(defpackage :lisp-critic
+  (:use  :lisp :tables :extend-match :write-wrap :destructuring)
+  (:import-from :extend-match :match-and)
+  )
+
+(in-package :lisp-critic)
+
+(export '(critique critique-file critique-definition
+          apply-critique-rule
+          lisp-critic-version
+          add-lisp-pattern define-lisp-pattern remove-lisp-pattern
+          get-pattern get-response get-pattern-names
+          response-args response-format-string
+          clear-critique-db))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Global variables and tables
@@ -293,6 +303,9 @@ forgot the USE-PACKAGE. Do this to fix things:
           (instantiate-pattern (response-args response)
                                blist)))
 
+(defun make-string (size &key initial-element)
+  (make-sequence 'string size :initial-element initial-element))
+
 ;;; the following can be done with
 ;;;
 ;;;   (format stream "~&~V,,,V<~:*~A~>~%" *output-width* ch)
@@ -378,8 +391,8 @@ forgot the USE-PACKAGE. Do this to fix things:
 (defun match-name-contains (args input blists)
   (destructuring-bind (substring) args
     (and (symbolp input)
-         (search substring (symbol-name input)
-                 :test #'char-equal)
+         (position substring (symbol-name input)
+                 :test #'string-equal)
          blists)))
 
 ;;; (?NAME-ENDS-WITH string) -- matches a symbol ending with
@@ -599,7 +612,7 @@ forgot the USE-PACKAGE. Do this to fix things:
 
 
 
-(provide "lisp-critic")
+(provide "critic/lisp-critic")
 
 #|
 CHANGE LOG
