@@ -29,6 +29,7 @@
 
 (require "critic/lisp-critic")
 (require "critic/lisp-rules")
+(require "critic/editor")
 
 (provide "critic")
 

@@ -1,3 +1,11 @@
+2011-05-12  MIYAMUKO Katsuyuki
+
+	* (critique-defun-popup): カーソル下の関数定義をチェックして
+	結果をポップアップ表示
+
+	* (critique-defun): カーソル下の関数定義をチェックして
+	結果をバッファに表示
+
 2011-05-11  MIYAMUKO Katsuyuki
 
 	* lisp-critic を xyzzy に移植
