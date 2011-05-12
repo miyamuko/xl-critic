@@ -68,6 +68,12 @@ lisp-critic については {lisp-criticでスタイルチェック - わだばL
 === KNOWN BUGS
 
 * バイトコンパイルしないと死ぬほど遅いが、バイトコンパイルすると動かない。
+* エラーメッセージがおかしい
+
+    ----------------------------------------------------------------------
+    Why do you think you need that (lisp-critic::? lisp-critic::FN) on
+    (lisp-critic::? lisp-critic::VAR)?
+    ----------------------------------------------------------------------
 
 要望やバグは
 {GitHub Issues}[http://github.com/miyamuko/xl-critic/issues] か
