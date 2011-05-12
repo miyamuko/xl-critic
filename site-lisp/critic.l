@@ -1,4 +1,4 @@
-; -*- mode: lisp; package: user; encoding: sjis -*-
+; -*- mode: lisp; package: user; encoding: shift_jis -*-
 
 ;;; critic.l
 ;;
